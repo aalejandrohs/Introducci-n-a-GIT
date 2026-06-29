@@ -45,7 +45,7 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
 
 ### Día 1 (Lunes 29 junio 2026)
 
-<!-- - Presentación profesor / alumnos
+- Presentación profesor / alumnos
 - Introducción: Qué es un SCV y qué un SCV distribuido
 - IDE / Editor de código: Visual Studio Code (VSC)
 - Instalación de Git
@@ -57,13 +57,12 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
   - Primer repo (init), primer commit: .gitignore / readme.md
   - Anatomía de un repositorio git: working directory, staging area (index o cache) y repositorio (.git)
   - Estados de un archivo: untracked (U), tracked (modified (M), staged (A), committed) -->
-
-- [Descanso]
-
-<!-- - Primeros pasos con Git (2)
-
   - add/commit/reset y status/log/show - GitGraph
   - Mensajes de commit
+
+- [Descanso] 11:30 - 11:50
+
+- Primeros pasos con Git (2)
 
 - Anatomía de comandos típicos, referencias VS paths
 
@@ -84,15 +83,16 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
   - Qué son
   - Cómo crearlos desde el CLI: `git config --global alias.ch checkout`
   - Crearlos editando el fichero de configuración: `git config --global -e` -->
-
-### Día 2 (Martes 30 junio 2026)
-
-<!-- - Ficheros Markdown
+- Ficheros Markdown
   - Qué son
   - Sintaxis básica
-  - Vista previa en VSC / GitHub / GitLab -->
+  - Vista previa en VSC / GitHub / GitLab 
 
-<!-- - Git internals
+
+
+<!-- (No incluido en el curso actual)
+
+- Git internals (1/2 día)
 
   - Estructura de un repositorio git: .git
   - Objetos git: blobs, trees, commits (y tags)
@@ -100,9 +100,10 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - Creación del árbol de objetos en un primer commit
     - Modificación del árbol de objetos en commits sucesivos
   - Referencias: HEAD, ramas (tags y remotes)
-  - Taller: creación de un repositorio git "a mano" -->
+  - Taller: creación de un repositorio git "a mano" 
+-->
 
-- [Descanso]
+### Día 2 (Martes 30 junio 2026)
 
 <!-- - Herramientas para preparar un buen commit en cualquier situación
 
@@ -120,8 +121,11 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - git command --amend
       - Ref logs
     - git checkout y git reset (introducción)
+-->
 
-Hasta las 11 del día sigiuiente
+- [Descanso]
+
+<!--
 
 - Reescribiendo la historia (2)
   - git checkout
@@ -135,7 +139,8 @@ Hasta las 11 del día sigiuiente
     - drop: eliminando un commit
 - Otros comandos
   - git clean
-  - git revert -->
+  - git revert 
+-->
 
 ### Día 3 (Miércoles 1 julio 2026)
 
