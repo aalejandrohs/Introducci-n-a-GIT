@@ -11,33 +11,33 @@ Formador: Alejandro Cerezo
 ## Contenidos
 
 - Conceptos básicos
-    - ¿Qué es y que no es GIT?
-    - Cómo usar correctamente GIT
-    - Configuración imprescindible 
+    - `¿Qué es y que no es GIT?`
+    - `Cómo usar correctamente GIT`
+    - `Configuración imprescindible` 
 - Fundamentos y arquitectura interna de GIT
-    - Diferencias entre el working directory, el stage y el repositorio
-    - Qué es exactamente un commit
-    - Tipos de referencias (HEAD, ramas y tags) 
+    - `Diferencias entre el working directory, el stage y el repositorio`
+    - `Qué es exactamente un commit`
+    - `Tipos de referencias (HEAD, ramas y tags)` 
 - Commits
-    - Cómo preparar selectivamente un commit
-    - Cuando hacer un commit
-    - Cómo deshacer commits
-    - Buenas prácticas 
+    - `Cómo preparar selectivamente un commit`
+    - `Cuando hacer un commit`
+    - `Cómo deshacer commits`
+    - `Buenas prácticas` 
 - Como resolver los conflictos
-    - Qué es un conflicto, cómo reducir su frecuencia y cómo resolverlos
+    - `Qué es un conflicto, cómo reducir su frecuencia y cómo resolverlos`
 - Branching
-    - Qué es exactamente una rama en GIT
-    - Cómo trabajar con ramas y diferentes maneras de fusionarlas
-    - Modelos de branching
-    - Git Flow 
+    - `Qué es exactamente una rama en GIT`
+    - `Cómo trabajar con ramas y diferentes maneras de fusionarlas`
 - Trabajando con repositorios remotos
-    - Cómo comunicar los repositorios locales con los remotos
+    - `Cómo comunicar los repositorios locales con los remotos`
     - Diferentes escenarios cuando trabajamos en equipo contra un repositorio remoto
     - Configuración básica 
 - Pull Requests
     - Por qué usar PR
     - Cómo hacer correctamente una PR
     - Cómo configurar el repositorio remoto si usamos “PR”
+- Modelos de branching
+    - Git Flow 
 
 Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/-Introducci-n-a-GIT-AF-47082-GR-99733)
 
@@ -88,8 +88,6 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
   - Sintaxis básica
   - Vista previa en VSC / GitHub / GitLab 
 
-
-
 <!-- (No incluido en el curso actual)
 
 - Git internals (1/2 día)
@@ -122,7 +120,7 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
 
   - Reescribiendo la historia
     - Advertencia
-    - git command --amend
+    - git commit --amend
       - Ref logs
     - git checkout y git reset (introducción)
     - git checkout
@@ -133,6 +131,7 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
 
 - Reescribiendo la historia (2)
   - git reset
+    - opciones de git reset: --soft, --mixed y --hard
     - git reset a nivel de archivo
   - rebase interactivo
     - edit: modificando un commit
@@ -149,10 +148,7 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - bugs (bugs/login-error, bugs/signup-error)
     - Ramas: etiquetas
 
-
 ### Día 3 (Miércoles 1 julio 2026)
-
-<!-- 
 
   - Ramas
     - Crear y seleccionar
@@ -166,27 +162,20 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - git merge
       - fast-forward
       - three-way (ort) merge
-    - git rebase -->
+    - git rebase
 
-- [Descanso]
+- [Descanso] 11:20 - 11:40
 
-<!-- 
   - Combinación de ramas (continuación)
-
     - Resolución de conflictos
-
   - git cherry-pick
-
-  - Preguntas: cherry-pick v. merge y modelos de branching
+  - patches (mención breve) 
 
 - Etiquetas (tags)
-
   - Tags anotadas y tags ligeros
-  - Crear, listar, eliminar -->
+  - Crear, listar, eliminar 
 
-### Día 4 (Jueves 2 julio 2026)
-
-<!-- - Repositorios remotos
+- Repositorios remotos
 
   - Repositorios "bare"
   - Clonar repositorios: git clone
@@ -200,23 +189,28 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - Conflictos
 
   - Ramas remotas
+  
+### Día 4 (Jueves 2 julio 2026)
+
+<!-- 
+  - Ramas remotas (review)
     - Seguimiento de ramas remotas (tracking branches)
     - Crear ramas locales a partir de ramas remotas: fetch + checkout / switch -c
     - Subir ramas locales a ramas remotas: -u
     - Eliminar ramas remotas
   - Pull requests (GitHub) / Merge requests (GitLab)
     - Flujo de trabajo típico
-    - Revisión de código -->
-
-- [Descanso]
-
-<!-- - Pull requests (GitHub) / Merge requests (GitLab)
+    - Revisión de código 
     - Resolución de conflictos en remoto
     - Buenas prácticas:
       - Actualizar la rama con la rama main antes de hacer el merge
       - Resolución de conflictos en local
       - Eliminar la rama una vez hecho el merge
-  
+  -->
+
+- [Descanso]
+
+<!-- - Pull requests (GitHub) / Merge requests (GitLab)
 
 - Flujos de trabajo (workflows)
 
