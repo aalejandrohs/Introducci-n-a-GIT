@@ -30,14 +30,14 @@ Formador: Alejandro Cerezo
     - `Cómo trabajar con ramas y diferentes maneras de fusionarlas`
 - Trabajando con repositorios remotos
     - `Cómo comunicar los repositorios locales con los remotos`
-    - Diferentes escenarios cuando trabajamos en equipo contra un repositorio remoto
-    - Configuración básica 
+    - `Diferentes escenarios cuando trabajamos en equipo contra un repositorio remoto`
+    - `Configuración básica `
 - Pull Requests
-    - Por qué usar PR
-    - Cómo hacer correctamente una PR
-    - Cómo configurar el repositorio remoto si usamos “PR”
+    - `Por qué usar PR`
+    - `Cómo hacer correctamente una PR`
+    - `Cómo configurar el repositorio remoto si usamos “PR”`
 - Modelos de branching
-    - Git Flow 
+    - `Git Flow`
 
 Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/-Introducci-n-a-GIT-AF-47082-GR-99733)
 
@@ -196,26 +196,26 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
 
 - git notes
 
-<!-- 
   - Ramas remotas (review)
     - Crear ramas locales a partir de ramas remotas: fetch + checkout / switch -c
-    - Eliminar ramas remotas
+    - Eliminar ramas remotas git branch -d -r origin/feature/branch
+
   - Pull requests (GitHub) / Merge requests (GitLab)
     - Flujo de trabajo típico
     - Revisión de código 
+
+- [Descanso] 11:10 - 11:30
+
+- [Encuesta](https://forms.cloud.microsoft/pages/responsepage.aspx?id=tA7tEz6_F0GYpeEuIOyC74dmltakDyZNkCB0fAWABS1UNDU5S1k5RFo4RE9KQkkyR0ZGTDJaUVZBTSQlQCN0PWcu&route=shorturl)
+
+- Pull requests (GitHub) / Merge requests (GitLab)
     - Resolución de conflictos en remoto
     - Buenas prácticas:
       - Actualizar la rama con la rama main antes de hacer el merge
       - Resolución de conflictos en local
       - Eliminar la rama una vez hecho el merge
-  -->
-
-- [Descanso]
-
-<!-- - Pull requests (GitHub) / Merge requests (GitLab)
 
 - Flujos de trabajo (workflows)
-
   - Git Flow
   - GitLab Flow
   - GitHub Flow
@@ -227,12 +227,13 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
   - Hooks
   - Husky (Hooks en JS) 
 
---->
-
 <!--
+
 (No incluido en el curso actual, pero puede ser interesante para el alumno)
 
 - Sub-proyectos (submodules)
+
+- WorkTrees
 
 - GitHub (comentario general)
   - Hosting de Repositorios

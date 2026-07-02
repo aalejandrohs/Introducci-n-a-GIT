@@ -105,14 +105,6 @@ Parte del final ver documento aparte: [CI/CD](./ci-cd.md)
       - [Patches](#patches)
       - [Tags](#tags)
         - [Operaciones con tags](#operaciones-con-tags)
-      - [Worktrees](#worktrees)
-        - [Casos de uso comunes](#casos-de-uso-comunes)
-        - [Operaciones básicas con worktrees](#operaciones-básicas-con-worktrees)
-        - [Comandos principales](#comandos-principales)
-        - [Ejemplo práctico](#ejemplo-práctico)
-        - [Limitaciones y consideraciones](#limitaciones-y-consideraciones)
-        - [Integración con IDEs](#integración-con-ides)
-        - [Comandos relacionados útiles](#comandos-relacionados-útiles)
   - [Día 4](#día-4)
     - [TRABAJANDO EN PARALELO: REPOSITORIOS REMOTOS](#trabajando-en-paralelo-repositorios-remotos)
       - [¿Qué son los repositorios remotos?](#qué-son-los-repositorios-remotos)
@@ -133,6 +125,25 @@ Parte del final ver documento aparte: [CI/CD](./ci-cd.md)
         - [GitHub Flow, Feature Branching, Trunk Based Development](#github-flow-feature-branching-trunk-based-development)
         - [Ship-show-ask](#ship-show-ask)
     - [BUENAS PRÁCTICAS](#buenas-prácticas)
+  - [Apéndices](#apéndices)
+    - [Git Hooks](#git-hooks)
+        - [Husky](#husky)
+      - [Instalación y configuración de Husky](#instalación-y-configuración-de-husky)
+      - [Ejemplos de scrips para Husky](#ejemplos-de-scrips-para-husky)
+    - [Worktrees](#worktrees)
+      - [Casos de uso comunes](#casos-de-uso-comunes)
+      - [Operaciones básicas con worktrees](#operaciones-básicas-con-worktrees)
+      - [Comandos principales](#comandos-principales)
+      - [Ejemplo práctico](#ejemplo-práctico)
+      - [Limitaciones y consideraciones](#limitaciones-y-consideraciones)
+      - [Integración con IDEs](#integración-con-ides)
+      - [Comandos relacionados útiles](#comandos-relacionados-útiles)
+    - [SUB-PROYECTOS](#sub-proyectos)
+      - [Submodules](#submodules)
+        - [Creación de un submodule](#creación-de-un-submodule)
+          - [Clonado de un repositorio con submodules: inicialización](#clonado-de-un-repositorio-con-submodules-inicialización)
+        - [Actualizaciones de un submodule](#actualizaciones-de-un-submodule)
+  - [Día 5](#día-5)
     - [GitHub](#github)
       - [Introducción. ¿Qué es GitHub?](#introducción-qué-es-github)
       - [Archivos esenciales del repositorio](#archivos-esenciales-del-repositorio)
@@ -143,8 +154,6 @@ Parte del final ver documento aparte: [CI/CD](./ci-cd.md)
         - [Características principales de GitHub Pages](#características-principales-de-github-pages)
         - [Cómo crear un sitio web con GitHub Pages](#cómo-crear-un-sitio-web-con-github-pages)
       - [Sitios Web y GitHub Pages](#sitios-web-y-github-pages)
-  - [Día 5](#día-5)
-    - [GitHub (Continuación)](#github-continuación)
       - [GITHUB PAGES. Practicas](#github-pages-practicas)
         - [Crear un sitio web con Astro y publicarlo en GitHub Pages](#crear-un-sitio-web-con-astro-y-publicarlo-en-github-pages)
       - [GitHub CLI (continuación)](#github-cli-continuación)
@@ -157,12 +166,6 @@ Parte del final ver documento aparte: [CI/CD](./ci-cd.md)
           - [Crear una release en GitHub](#crear-una-release-en-github)
           - [Crear una release con el GitLab CLI](#crear-una-release-con-el-gitlab-cli)
     - [CI/CD](#cicd)
-  - [Apéndices](#apéndices)
-    - [SUB-PROYECTOS](#sub-proyectos)
-      - [Submodules](#submodules)
-        - [Creación de un submodule](#creación-de-un-submodule)
-          - [Clonado de un repositorio con submodules: inicialización](#clonado-de-un-repositorio-con-submodules-inicialización)
-        - [Actualizaciones de un submodule](#actualizaciones-de-un-submodule)
 
 ## Formador
 
@@ -2494,149 +2497,6 @@ Para usar un tag, se puede hacer checkout a un tag
 git checkout v1.0
 ```
 
-#### Worktrees
-
-Los worktrees son una funcionalidad de Git que apareció en la versión 2.5 (2015) y permite tener múltiples working areas asociadas a un mismo repositorio. Cada worktree tiene su propia rama y su propio HEAD, pero comparten el mismo historial de commits.
-
-Esta característica es especialmente útil cuando necesitas trabajar en múltiples ramas simultáneamente sin tener que hacer constantemente `git checkout` o `git stash`.
-
-##### Casos de uso comunes
-
-- **Desarrollo paralelo**: Trabajar en una nueva feature mientras mantienes la posibilidad de hacer hotfixes en main
-- **Testing**: Probar diferentes versiones del código sin afectar tu trabajo actual
-- **Code review**: Revisar pull requests mientras continúas desarrollando
-- **Builds**: Mantener un worktree dedicado para builds de producción
-
-##### Operaciones básicas con worktrees
-
-Para crear un worktree se utiliza el comando `git worktree add`:
-
-```shell
-git worktree add <directorio> <rama>
-```
-
-Es una buena práctica que el directorio del worktree esté fuera del directorio del repositorio principal:
-
-```shell
-git worktree add ../feature/feature-xyz feature/feature-xyz
-```
-
-##### Comandos principales
-
-**Crear un nuevo worktree:**
-
-```shell
-# Crear worktree en directorio específico con rama existente
-git worktree add ../hotfix hotfix/bug-123
-
-# Crear worktree con nueva rama
-git worktree add -b nueva-feature ../feature main
-
-# Crear worktree temporal (se eliminará automáticamente)
-git worktree add --detach ../temp HEAD~2
-```
-
-**Listar worktrees existentes:**
-
-```shell
-git worktree list
-git worktree list --porcelain  # Formato más detallado
-```
-
-**Información de un worktree:**
-
-```shell
-# Muestra el path, la rama y el commit
-git worktree list -v
-```
-
-**Eliminar un worktree:**
-
-```shell
-# Desde el repositorio principal
-git worktree remove ../feature/feature-xyz
-
-# Forzar eliminación (incluso con cambios no guardados)
-git worktree remove --force ../feature/feature-xyz
-```
-
-**Limpiar worktrees eliminados manualmente:**
-
-```shell
-git worktree prune
-```
-
-**Mover un worktree:**
-
-```shell
-git worktree move ../old-location ../new-location
-```
-
-##### Ejemplo práctico
-
-```shell
-# Situación inicial: trabajando en feature-login
-git branch
-# * feature-login
-#   main
-
-# Llega un bug crítico que hay que arreglar en main
-# En lugar de hacer stash y checkout, creamos un worktree
-git worktree add ../hotfix main
-
-# Cambiamos al directorio del hotfix
-cd ../hotfix
-
-# Trabajamos en el hotfix
-echo "bug fix" >> bugfix.txt
-git add bugfix.txt
-git commit -m "Fix critical bug"
-
-# Subimos el hotfix
-git push origin main
-
-# Volvemos a nuestro trabajo original
-cd ../proyecto-principal
-
-# El worktree de hotfix ya no es necesario
-git worktree remove ../hotfix
-```
-
-##### Limitaciones y consideraciones
-
-- **No se pueden tener múltiples worktrees** en la misma rama (excepto en modo detached)
-- **Los hooks se comparten** entre todos los worktrees
-- **La configuración se comparte** entre todos los worktrees
-- **Los reflog son independientes** para cada worktree
-- **Cuidado con operaciones destructivas** como `git reset --hard` que afectan solo al worktree actual
-
-##### Integración con IDEs
-
-Muchos IDEs modernos soportan worktrees:
-
-- **VS Code**: Detecta automáticamente los worktrees y permite alternar entre ellos
-- **IntelliJ IDEA**: Soporte nativo para worktrees desde la versión 2021.2
-- **Vim/Neovim**: Plugins como `vim-fugitive` tienen soporte para worktrees
-
-##### Comandos relacionados útiles
-
-```shell
-# Ver en qué worktree estamos
-git rev-parse --show-toplevel
-
-# Ver información del repositorio principal
-git worktree list | head -1
-
-# Crear worktree temporal para builds
-git worktree add --detach ../build-temp v1.2.3
-cd ../build-temp
-npm run build
-cd ../proyecto-principal
-git worktree remove ../build-temp
-```
-
-Los worktrees son una herramienta poderosa que puede mejorar significativamente la productividad cuando se necesita trabajar con múltiples ramas de forma simultánea, evitando la necesidad de múltiples clones del repositorio.
-
 ## Día 4
 
 ### TRABAJANDO EN PARALELO: REPOSITORIOS REMOTOS
@@ -3049,6 +2909,429 @@ Referencias
 - Usar branches, feature-branching
 - Fijar un workflow común
 
+## Apéndices
+
+### Git Hooks
+
+Los hooks son scripts que se ejecutan automáticamente en determinados momentos del ciclo de vida de un repositorio Git. Permiten automatizar tareas, como la validación de código, la ejecución de tests, el envío de notificaciones, etc.
+
+Podemos encontrar información sobre su funcionamiento
+
+- en la documentación oficial de Git: https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
+- el el libro Pro Git: https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
+
+Al inicializar un nuevo repositorio con `git init`, Git llena el directorio de hooks `.git/hooks` con varios scripts de ejemplo, muchos de los cuales son útiles por sí mismos; además, documentan los valores de entrada de cada script. Todos los ejemplos están escritos como `scripts de shell`, con algo de `Perl`, pero cualquier script ejecutable con un nombre correcto funcionará correctamente; (`Ruby`, `Python`...). Si quieres usar los scripts de hook incluidos, tendrás que renombrarlos; todos sus nombres de archivo terminan en .sample.
+
+Los hooks que se encuentran inicialmente en el directorio `.git/hooks` del repositorio son los siguientes:
+
+- prepare-commit-msg.sample -> Preparar el mensaje de commit
+- commit-msg.sample -> Validar el mensaje de commit
+- pre-commit.sample -> Validar los cambios antes de hacer un commit
+- push-to-checkout.sample -> Validar los cambios antes de hacer un checkout
+- pre-merge-commit.sample -> Validar los cambios antes de hacer un merge
+- pre-rebase.sample -> Validar los cambios antes de hacer un rebase
+- pre-push.sample -> Validar los cambios antes de hacer un push
+- pre-receive.sample -> Validar los cambios antes de recibir un push
+
+- update.sample -> Validar los cambios antes de hacer un update
+- post-update.sample -> Notificar a los usuarios sobre actualizaciones
+- applypatch-msg.sample -> Validar los mensajes de los parches aplicados
+- pre-applypatch.sample -> Validar los parches antes de aplicarlos
+- fsmonitor-watchman.sample -> Integración con Watchman para mejorar el rendimiento de git status
+- sendemail-validate.sample -> Validar los correos electrónicos enviados
+
+Estos hooks se pueden clasificar en dos tipos:
+
+- hooks de lado cliente: commits, emails, rebase, ...
+- hooks de lado servidor: prereceive, postreceive, update
+
+Los hooks de lado cliente se ejecutan en el equipo del desarrollador y permiten validar los cambios antes de hacer un commit, un push, un rebase, etc.
+Los hooks de lado servidor se ejecutan en el servidor y permiten validar los cambios antes de recibir un push, notificar a los usuarios sobre actualizaciones, etc.
+
+##### Husky
+
+[Husky](https://typicode.github.io/husky/) es una herramienta que permite ejecutar scripts de cualquier lenguaje de scripting (por ejemplo Node.js) en respuesta a eventos de Git. Para ello se aprovechan los [**hooks** de Git](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks), que son scripts que en función de su nombre, se ejecutan automáticamente en respuesta a eventos específicos, como `pre-commit`, `prepare-commit-msg`, `commit-msg` y `post-merge`.
+
+Husky puede utilizarse para ejecutar pruebas unitarias y de estilo de código antes de realizar un commit, o para ejecutar pruebas de estilo de código en los archivos que se han modificado.
+
+#### Instalación y configuración de Husky
+
+Para instalar Husky en un proyecto, se puede ejecutar el siguiente comando:
+
+```sh
+npm install -D husky
+```
+
+A continuación, se puede configurar Husky ejecutando el siguiente comando:
+
+```sh
+npx husky init
+```
+
+Como consecuencia de crea un script `pre-commit` y se añade o se actualiza en el archivo `package.json` el script `prepare`:
+
+```json
+// package.json
+  "scripts": {
+    "test": "node --test",
+    "prepare": "husky"
+  }
+```
+
+```script
+// .husky/pre-commit
+npm test
+```
+
+En este caso, el script `pre-commit` ejecuta el script `test` definido en el archivo `package.json`.
+El valor por defecto de ese script, en lugar de ejecutar las pruebas unitarias, incluye un mensaje y un código de salida.
+
+```json
+// package.json
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+```
+
+Si el código de salida es 1, estamos simulando un error en las pruebas unitarias, lo que provocará que Husky impida que el commit se realice. De esta forma podemos comp`robar fácilmente el correcto funcionamiento de Husky.
+
+#### Ejemplos de scrips para Husky
+
+Para el hook commit-msg, podemos forzar que el mensaje del commit tenga una longitud entre 10 y 72 caracteres, mediante el siguiente script:
+
+```sh
+// .husky/commit-msg
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+while read line; do
+    ## Skip comments
+    if [ "${line:0:1}" == "#" ]; then
+        continue
+    fi
+    if [ ${#line} -ge 72 ] || [ ${#line} -le 10 ]; then
+        echo -e "\033[0;31mThe length of the message has to be between 10 and 72 characters."
+        exit 1
+    fi
+done < "${1}"
+
+exit 0
+```
+
+Para el hook pre-commit, podemos forzar que se ejecute un script de linting antes de cada commit, mediante el siguiente script:
+
+```sh
+// .husky/pre-commit
+npm run lint
+```
+
+Para el hook pre-push, podemos forzar que el nombre de la rama cumpla con un patrón específico, mediante el siguiente script:
+
+```sh
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+local_branch_name="$(git rev-parse --abbrev-ref HEAD)"
+
+valid_branch_regex='^((hotfix|bugfix|feature)\/[a-zA-Z0-9\-]+)$'
+
+message="Please check your branch name."
+
+if [[ ! $local_branch_name =~ $valid_branch_regex ]]; then
+    echo -e "\033[0;31m$message"
+    exit 1
+fi
+
+exit 0
+```
+
+Para el hook post-merge, podemos forzar que se ejecute un script específico después de cada merge, mediante el siguiente script:
+
+```sh
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run post-merge
+```
+
+En el ejemplo del pre-push, al comprueba que el nombre de la rama cumpla con un patrón específico, indirectamente estamos protegiendo la rama `main` o `master` de cambios directos, ya que el nombre de la rama no cumplirá con el patrón. Los cambios en estas rama quedarían restringidos al uso de **pull requests (PR)**, que permiten revisar los cambios antes de integrarlos en la rama principal.
+
+Sin embargo tenemos que tener en cuenta que los hooks de Git son scripts que se ejecutan en el equipo de cada desarrollador, por lo que pueden ser modificados por los desarrolladores o deshabilitados añadiendo a la ejecución de los comandos de git el modificador `--no-verify`.
+
+Además, nada garantiza que los hooks de Git se compartan en todos los miembros del equipo. Por todo ello, Husky no es una solución definitiva para garantizar la calidad del código. Para ello, es necesario implementar un sistema de integración continua y entrega continua a nivel del servidor de integración continua.
+
+
+
+### Worktrees
+
+Los worktrees son una funcionalidad de Git que apareció en la versión 2.5 (2015) y permite tener múltiples working areas asociadas a un mismo repositorio. Cada worktree tiene su propia rama y su propio HEAD, pero comparten el mismo historial de commits.
+
+Esta característica es especialmente útil cuando necesitas trabajar en múltiples ramas simultáneamente sin tener que hacer constantemente `git checkout` o `git stash`.
+
+#### Casos de uso comunes
+
+- **Desarrollo paralelo**: Trabajar en una nueva feature mientras mantienes la posibilidad de hacer hotfixes en main
+- **Testing**: Probar diferentes versiones del código sin afectar tu trabajo actual
+- **Code review**: Revisar pull requests mientras continúas desarrollando
+- **Builds**: Mantener un worktree dedicado para builds de producción
+
+#### Operaciones básicas con worktrees
+
+Para crear un worktree se utiliza el comando `git worktree add`:
+
+```shell
+git worktree add <directorio> <rama>
+```
+
+Es una buena práctica que el directorio del worktree esté fuera del directorio del repositorio principal:
+
+```shell
+git worktree add ../feature/feature-xyz feature/feature-xyz
+```
+
+#### Comandos principales
+
+**Crear un nuevo worktree:**
+
+```shell
+# Crear worktree en directorio específico con rama existente
+git worktree add ../hotfix hotfix/bug-123
+
+# Crear worktree con nueva rama
+git worktree add -b nueva-feature ../feature main
+
+# Crear worktree temporal (se eliminará automáticamente)
+git worktree add --detach ../temp HEAD~2
+```
+
+**Listar worktrees existentes:**
+
+```shell
+git worktree list
+git worktree list --porcelain  # Formato más detallado
+```
+
+**Información de un worktree:**
+
+```shell
+# Muestra el path, la rama y el commit
+git worktree list -v
+```
+
+**Eliminar un worktree:**
+
+```shell
+# Desde el repositorio principal
+git worktree remove ../feature/feature-xyz
+
+# Forzar eliminación (incluso con cambios no guardados)
+git worktree remove --force ../feature/feature-xyz
+```
+
+**Limpiar worktrees eliminados manualmente:**
+
+```shell
+git worktree prune
+```
+
+**Mover un worktree:**
+
+```shell
+git worktree move ../old-location ../new-location
+```
+
+#### Ejemplo práctico
+
+```shell
+# Situación inicial: trabajando en feature-login
+git branch
+# * feature-login
+#   main
+
+# Llega un bug crítico que hay que arreglar en main
+# En lugar de hacer stash y checkout, creamos un worktree
+git worktree add ../hotfix main
+
+# Cambiamos al directorio del hotfix
+cd ../hotfix
+
+# Trabajamos en el hotfix
+echo "bug fix" >> bugfix.txt
+git add bugfix.txt
+git commit -m "Fix critical bug"
+
+# Subimos el hotfix
+git push origin main
+
+# Volvemos a nuestro trabajo original
+cd ../proyecto-principal
+
+# El worktree de hotfix ya no es necesario
+git worktree remove ../hotfix
+```
+
+#### Limitaciones y consideraciones
+
+- **No se pueden tener múltiples worktrees** en la misma rama (excepto en modo detached)
+- **Los hooks se comparten** entre todos los worktrees
+- **La configuración se comparte** entre todos los worktrees
+- **Los reflog son independientes** para cada worktree
+- **Cuidado con operaciones destructivas** como `git reset --hard` que afectan solo al worktree actual
+
+#### Integración con IDEs
+
+Muchos IDEs modernos soportan worktrees:
+
+- **VS Code**: Detecta automáticamente los worktrees y permite alternar entre ellos
+- **IntelliJ IDEA**: Soporte nativo para worktrees desde la versión 2021.2
+- **Vim/Neovim**: Plugins como `vim-fugitive` tienen soporte para worktrees
+
+#### Comandos relacionados útiles
+
+```shell
+# Ver en qué worktree estamos
+git rev-parse --show-toplevel
+
+# Ver información del repositorio principal
+git worktree list | head -1
+
+# Crear worktree temporal para builds
+git worktree add --detach ../build-temp v1.2.3
+cd ../build-temp
+npm run build
+cd ../proyecto-principal
+git worktree remove ../build-temp
+```
+
+Los worktrees son una herramienta poderosa que puede mejorar significativamente la productividad cuando se necesita trabajar con múltiples ramas de forma simultánea, evitando la necesidad de múltiples clones del repositorio.
+
+### SUB-PROYECTOS
+
+Existen varias formas de incluir un subproyecto en un proyecto Git
+
+- Submodules
+- Subtree
+- Subrepo (opción extra, no incluida en Git)
+
+Los submodules son la opción más utilizada y la que mejor se integra con Git. Permiten incluir un repositorio Git dentro de otro repositorio Git, manteniendo ambos repositorios independientes.
+Los subtree permiten incluir un repositorio Git dentro de otro repositorio Git, pero integrando ambos repositorios en uno solo. No mantienen la independencia entre ambos repositorios.
+
+#### Submodules
+
+Los submodules son una característica de Git que permite incluir un repositorio Git dentro de otro repositorio Git, manteniendo ambos repositorios independientes.
+Los submodules son útiles cuando se quiere incluir una librería, un framework, un plugin, etc. en un proyecto, pero se quiere mantener la independencia entre ambos proyectos.
+
+##### Creación de un submodule
+
+El primer paso es añadir un repositorio ya existente como submodule al repositorio principal con el comando `git submodule add`
+
+```shell
+git submodule add \<url\> [<path>]
+```
+
+La url es la dirección del repositorio que se quiere añadir como submodule.
+El path es el directorio donde se quiere clonar el submodule. Si no se indica, se clona en un directorio con el mismo nombre que el repositorio. Un valor habitual para librerías externas es `vendor/nombre_libreria`
+
+El resultado es el equivalente a clonar el repositorio en el directorio indicado y añadir un fichero `.gitmodules` en el que se almacena los metadata con la información del submodule, como la url y el path.
+
+Si despues de añadir el submodule se hace un `git status`, se verá que hay dos cambios pendientes de commit
+
+- el fichero `.gitmodules`
+- el directorio del submodule, que se muestra como un nuevo fichero, con el nombre del submodule y el hash del commit al que apunta
+
+```shell
+git status
+On branch main
+new file:   .gitmodules
+new file:   nombre_submodule (new commits)
+```
+
+Si hacemos git add y git diff, veremos que no muestra los cambios en el submodule como una carpeta, sino como el hash del commit al que apunta el submodule.
+
+```shell
+git add .
+git diff --cached
+diff --git a/.gitmodules b/.gitmodules
+new file mode 100644
+index 0000000..e69de29
+--- /dev/null
++++ b/.gitmodules
+@@ -0,0 +1,3 @@
++ [submodule "nombre_submodule"]
++	path = nombre_submodule
++	url = <url>
+diff --git a/nombre_submodule b/nombre_submodule
+new file mode 160000
+index 0000000..4b825dc
+--- /dev/null
++++ b/nombre_submodule
+@@ -0,0 +1 @@
++Subproject commit 4b825dc642cb6eb9a060e54bf8d69288fbee4904
+```
+
+Lo siguiente paso es hacer un commit para guardar los cambios en el repositorio principal.
+
+```shell
+git commit -m "Añadido submodule nombre_submodule"
+```
+
+###### Clonado de un repositorio con submodules: inicialización
+
+Cuando se clona un repositorio que contiene submodules, los submodules no se clonan automáticamente. Se crea la estructura de directorios, pero no se descargan los ficheros del submodule. Es necesario inicializarlos y actualizarlos con los comandos `git submodule init` (para registrar el submodule) y `git submodule update` (para descargar los ficheros del submodule)
+
+```shell
+git submodule init
+git submodule update
+```
+
+Si se quiere clonar el repositorio y los submodules en un solo paso, se puede utilizar el modificador `--recurse-submodules` del comando `git clone`
+
+```shell
+git clone --recurse-submodules <url>
+```
+
+##### Actualizaciones de un submodule
+
+Los submodules son independientes del repositorio principal, por lo que se pueden actualizar de forma independiente. Para actualizar un submodule, existen dos mecanismos.
+
+- Primera opción
+
+se debe entrar en el directorio del submodule y hacer un `git pull` para descargar los cambios del repositorio remoto del submodule.
+
+```shell
+cd nombre_submodule
+git pull
+```
+
+Como se habrá actualizado el submodule apuntando al nuevo commit final de repo al que apunta , el repositorio principal detectará que hay cambios pendientes de commit en el submodule. Se debe hacer un `git add` y un `git commit` para guardar los cambios en el repositorio principal.
+
+```shell
+cd ..
+git add nombre_submodule
+git commit -m "Actualizado submodule nombre_submodule"
+```
+
+- Segunda opción
+
+Se puede actualizar el submodule desde el repositorio principal, sin entrar en el directorio del submodule, con el comando `git submodule update --remote`
+
+```shell
+git submodule update --remote --recursive
+```
+
+De esta forma se actualizarían todos los submódulos que haya en el repositorio, incluidos los submódulos de los submódulos (si los hubiera).
+
+Como en el caso anterior, se debe hacer un `git add` y un `git commit` para guardar los cambios en el repositorio principal.
+
+```shell
+git add .
+git commit -m "Actualizado submodule nombre_submodule"
+```
+
+Cuando otros usuarios han actualizado los submodulos y lo han reflejado en el repo compartido, al hacer un `git pull` en el repositorio principal, los submodules no se actualizan automáticamente. Se debe hacer un `git pull --recurse-submodules` para actualizar los submodules a la versión que indica el repositorio principal.
+
+## Día 5
+
 ### GitHub
 
 - **Website**: [https://github.com](https://github.com/about)
@@ -3267,10 +3550,6 @@ Los generadores de sitios web estáticos como Jekyll, Hugo, Gatsby, Next.js y ot
 - **Next.js**: Next.js es un framework de React que permite la generación de sitios estáticos y puede usarse para crear sitios web que se publiquen en GitHub Pages.
 - **Astro**: Astro es un moderno generador de sitios estáticos que soporta múltiples frameworks y puede integrarse con GitHub Pages para publicar sitios web.
 - **Otros generadores**: Otros generadores de sitios estáticos como Eleventy, VuePress, Docusaurus y más también pueden integrarse con GitHub Pages para publicar sitios web.
-
-## Día 5
-
-### GitHub (Continuación)
 
 #### GITHUB PAGES. Practicas
 
@@ -3597,129 +3876,3 @@ glab release create v1.2.0 --name "Version 1.2.0" --notes "Release notes"
 
 Ver documento aparte: [CI/CD](./ci-cd.md)
 
-## Apéndices
-
-### SUB-PROYECTOS
-
-Existen varias formas de incluir un subproyecto en un proyecto Git
-
-- Submodules
-- Subtree
-- Subrepo (opción extra, no incluida en Git)
-
-Los submodules son la opción más utilizada y la que mejor se integra con Git. Permiten incluir un repositorio Git dentro de otro repositorio Git, manteniendo ambos repositorios independientes.
-Los subtree permiten incluir un repositorio Git dentro de otro repositorio Git, pero integrando ambos repositorios en uno solo. No mantienen la independencia entre ambos repositorios.
-
-#### Submodules
-
-Los submodules son una característica de Git que permite incluir un repositorio Git dentro de otro repositorio Git, manteniendo ambos repositorios independientes.
-Los submodules son útiles cuando se quiere incluir una librería, un framework, un plugin, etc. en un proyecto, pero se quiere mantener la independencia entre ambos proyectos.
-
-##### Creación de un submodule
-
-El primer paso es añadir un repositorio ya existente como submodule al repositorio principal con el comando `git submodule add`
-
-```shell
-git submodule add \<url\> [<path>]
-```
-
-La url es la dirección del repositorio que se quiere añadir como submodule.
-El path es el directorio donde se quiere clonar el submodule. Si no se indica, se clona en un directorio con el mismo nombre que el repositorio. Un valor habitual para librerías externas es `vendor/nombre_libreria`
-
-El resultado es el equivalente a clonar el repositorio en el directorio indicado y añadir un fichero `.gitmodules` en el que se almacena los metadata con la información del submodule, como la url y el path.
-
-Si despues de añadir el submodule se hace un `git status`, se verá que hay dos cambios pendientes de commit
-
-- el fichero `.gitmodules`
-- el directorio del submodule, que se muestra como un nuevo fichero, con el nombre del submodule y el hash del commit al que apunta
-
-```shell
-git status
-On branch main
-new file:   .gitmodules
-new file:   nombre_submodule (new commits)
-```
-
-Si hacemos git add y git diff, veremos que no muestra los cambios en el submodule como una carpeta, sino como el hash del commit al que apunta el submodule.
-
-```shell
-git add .
-git diff --cached
-diff --git a/.gitmodules b/.gitmodules
-new file mode 100644
-index 0000000..e69de29
---- /dev/null
-+++ b/.gitmodules
-@@ -0,0 +1,3 @@
-+ [submodule "nombre_submodule"]
-+	path = nombre_submodule
-+	url = <url>
-diff --git a/nombre_submodule b/nombre_submodule
-new file mode 160000
-index 0000000..4b825dc
---- /dev/null
-+++ b/nombre_submodule
-@@ -0,0 +1 @@
-+Subproject commit 4b825dc642cb6eb9a060e54bf8d69288fbee4904
-```
-
-Lo siguiente paso es hacer un commit para guardar los cambios en el repositorio principal.
-
-```shell
-git commit -m "Añadido submodule nombre_submodule"
-```
-
-###### Clonado de un repositorio con submodules: inicialización
-
-Cuando se clona un repositorio que contiene submodules, los submodules no se clonan automáticamente. Se crea la estructura de directorios, pero no se descargan los ficheros del submodule. Es necesario inicializarlos y actualizarlos con los comandos `git submodule init` (para registrar el submodule) y `git submodule update` (para descargar los ficheros del submodule)
-
-```shell
-git submodule init
-git submodule update
-```
-
-Si se quiere clonar el repositorio y los submodules en un solo paso, se puede utilizar el modificador `--recurse-submodules` del comando `git clone`
-
-```shell
-git clone --recurse-submodules <url>
-```
-
-##### Actualizaciones de un submodule
-
-Los submodules son independientes del repositorio principal, por lo que se pueden actualizar de forma independiente. Para actualizar un submodule, existen dos mecanismos.
-
-- Primera opción
-
-se debe entrar en el directorio del submodule y hacer un `git pull` para descargar los cambios del repositorio remoto del submodule.
-
-```shell
-cd nombre_submodule
-git pull
-```
-
-Como se habrá actualizado el submodule apuntando al nuevo commit final de repo al que apunta , el repositorio principal detectará que hay cambios pendientes de commit en el submodule. Se debe hacer un `git add` y un `git commit` para guardar los cambios en el repositorio principal.
-
-```shell
-cd ..
-git add nombre_submodule
-git commit -m "Actualizado submodule nombre_submodule"
-```
-
-- Segunda opción
-
-Se puede actualizar el submodule desde el repositorio principal, sin entrar en el directorio del submodule, con el comando `git submodule update --remote`
-
-```shell
-git submodule update --remote --recursive
-```
-
-De esta forma se actualizarían todos los submódulos que haya en el repositorio, incluidos los submódulos de los submódulos (si los hubiera).
-
-Como en el caso anterior, se debe hacer un `git add` y un `git commit` para guardar los cambios en el repositorio principal.
-
-```shell
-git add .
-git commit -m "Actualizado submodule nombre_submodule"
-```
-
-Cuando otros usuarios han actualizado los submodulos y lo han reflejado en el repo compartido, al hacer un `git pull` en el repositorio principal, los submodules no se actualizan automáticamente. Se debe hacer un `git pull --recurse-submodules` para actualizar los submodules a la versión que indica el repositorio principal.
