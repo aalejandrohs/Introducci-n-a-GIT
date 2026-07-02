@@ -189,14 +189,16 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - Conflictos
 
   - Ramas remotas
+    - Seguimiento de ramas remotas (tracking branches)
+    - Subir ramas locales a ramas remotas: -u
   
 ### Día 4 (Jueves 2 julio 2026)
 
+- git notes
+
 <!-- 
   - Ramas remotas (review)
-    - Seguimiento de ramas remotas (tracking branches)
     - Crear ramas locales a partir de ramas remotas: fetch + checkout / switch -c
-    - Subir ramas locales a ramas remotas: -u
     - Eliminar ramas remotas
   - Pull requests (GitHub) / Merge requests (GitLab)
     - Flujo de trabajo típico

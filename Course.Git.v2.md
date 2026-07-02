@@ -63,10 +63,12 @@ Parte del final ver documento aparte: [CI/CD](./ci-cd.md)
       - [Operaciones en la Staging Area (Index)](#operaciones-en-la-staging-area-index)
         - [Añadir ficheros](#añadir-ficheros)
         - [Eliminar de la Staging Area (Index)](#eliminar-de-la-staging-area-index)
+      - [Partial Staging](#partial-staging)
       - [Eliminar ficheros](#eliminar-ficheros)
         - [Problemas con .gitignore](#problemas-con-gitignore)
       - [Cambiar nombre de ficheros](#cambiar-nombre-de-ficheros)
       - [git blame](#git-blame)
+      - [git notes](#git-notes)
     - [Recapitulando: Git básico](#recapitulando-git-básico)
     - [REESCRIBIENDO LA HISTORIA](#reescribiendo-la-historia)
       - [Advertencia](#advertencia)
@@ -1618,6 +1620,52 @@ git checkout -- <file>
 git checkout HEAD -- <file>
 ```
 
+#### Partial Staging
+
+```shell
+git add -p ...
+```
+
+- permite añadir al área de preparación (staging area) solo partes de un fichero, en lugar de todo el fichero. 
+- Esto es útil cuando se han hecho varios cambios en un fichero y se quiere hacer un commit solo de algunos de ellos.
+
+La respuesta del shell es interactiva, y permite decidir si se quiere añadir al área de preparación un hunk (trozo) de un fichero o no:
+
+```shell
+(1/1) Stage this hunk [y,n,q,a,d,s,e,p,P,?]
+```
+
+El comando ? muestra la ayuda de las opciones disponibles:
+
+```shell
+(1/1) Stage this hunk [y,n,q,a,d,s,e,p,P,?]? 
+y - stage this hunk
+n - do not stage this hunk
+q - quit; do not stage this hunk or any of the remaining ones
+a - stage this hunk and all later hunks in the file
+d - do not stage this hunk or any of the later hunks in the file
+s - split the current hunk into smaller hunks
+e - manually edit the current hunk
+p - print the current hunk
+P - print the current hunk using the pager
+? - print help
+```
+
+- y: añadir al área de preparación
+- n: no añadir al área de preparación
+- q: salir, no añadir nada más
+- a: añadir todo lo que queda del fichero al área de preparación
+- d: no añadir nada más del fichero al área de preparación
+- s: dividir el hunk en trozos más pequeños
+- e: editar el hunk manualmente
+- p: imprimir el hunk
+- P: imprimir el hunk usando el pager
+- ? : mostrar la ayuda
+
+Inicialmente git detecta los hunks (fragmentos) que tenemos disponibles para añadir al área de preparación, y nos pregunta que queremos hacer con cada uno de ellos. 
+
+Una de las opciones más útiles es la `s`: dividir el hunk en trozos más pequeños, para poder añadir solo una parte del hunk al área de preparación.
+
 #### Eliminar ficheros
 
 Puede hacerse en dos fases
@@ -1718,6 +1766,57 @@ git blame <file>
 Es una herramienta muy útil para la revisión de código, que permite quién ha hecho un cambio en un fichero y para saber por qué se ha hecho un cambio.
 
 Esta también disponible cuando se accede al repositorio en GitHub
+
+#### git notes
+
+Esta funcionalidad se incorpora en Git 1.7.x, hacia 2012, en respuesta a la inmutabilidad de los commits. Permite añadir notas a un commit, sin modificar el commit en sí. 
+
+El comando notes add permite añadir una nota al commit más reciente, 
+El comando notes show permite ver las notas asociadas a ese commit.
+
+```shell
+git notes add -m "This is a note for the commit"
+git notes show
+```
+
+En ambos casos, Tambien se puede indicar un commit específico
+
+```shell
+git notes add -m "This is a note for the commit" <commit> 
+git notes show <commit>
+```
+
+Otras operaciones posibles son
+
+
+- mostrar las notas existentes
+- eliminar alguna nota
+
+```shell
+git notes list
+git notes remove <commit>
+```
+
+Es muy importante entender que las notas no se comparten con tu equipo por defecto. Un git push o git pull no incluirá las notas.
+
+Para compartir tus notas, debes hacer `push` explícitamente la rama de las notas, que se almacena como `refs/notes/commits`:
+
+```shell
+git push origin refs/notes/commits
+```
+
+De manera similar, para obtener notas de un repositorio remoto, tus colaboradores deben obtenerlas explícitamente:
+
+```shell
+git fetch origin refs/notes/commits:refs/notes/commits
+```
+
+Después de haber hecho esto una vez, Git recordará mantener las notas sincronizadas en operaciones de `push` y `fetch` posteriores para ese repositorio.
+
+Técnicamente, las notas son un commit especial que apunta a un objeto de tipo tree, que contiene dos hashes:
+
+- el del commit al que se asocia la nota.
+- el del blob que contiene la nota, es decir el texto que hemos añadido.
 
 ### Recapitulando: Git básico
 
